@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111318">
+<title>Spin The Wheel</title>
+<style>
+:root{color-scheme:dark;--bg:#101116;--panel:#191b23;--panel2:#222530;--text:#f5f6fb;--muted:#a5a9b8;--line:#303341;--accent:#8b7cff;--accent2:#6b5ce7;--good:#43c995;--danger:#ff647c;--shadow:0 18px 55px #0005}
+:root[data-theme="light"]{color-scheme:light;--bg:#f4f5fa;--panel:#fff;--panel2:#f0f1f7;--text:#202230;--muted:#707588;--line:#e1e3ec;--accent:#6556e8;--accent2:#5142d0;--good:#159c70;--danger:#df4964;--shadow:0 18px 55px #29304a14}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;transition:background .2s,color .2s}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:1320px;margin:auto;padding:24px 28px 48px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:25px}.brand{display:flex;align-items:center;gap:12px;font-weight:850;font-size:1.25rem;letter-spacing:-.04em}.brand-icon{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#a08cff,#6252e8);display:grid;place-items:center;color:white;font-size:23px;box-shadow:0 8px 25px #7868ef55}.top-actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 14px;border-radius:11px;font-weight:650;transition:transform .15s,filter .15s}.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.btn.primary{background:var(--accent2);border-color:var(--accent2);color:#fff}.btn.danger{color:var(--danger)}.btn.small{padding:7px 10px;font-size:.86rem}.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,.9fr);gap:22px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.wheel-panel{padding:24px;display:flex;flex-direction:column;align-items:center;min-width:0}.section-head{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.section-head h1,.section-head h2{margin:0;letter-spacing:-.035em}.section-head h1{font-size:1.55rem}.section-head h2{font-size:1.15rem}.wheel-wrap{position:relative;width:min(100%,570px);aspect-ratio:1;margin:6px auto 18px;display:grid;place-items:center}.wheel-wrap canvas{width:100%;height:100%;display:block;filter:drop-shadow(0 12px 20px #0003)}.pointer{position:absolute;z-index:2;top:-3px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:19px solid transparent;border-right:19px solid transparent;border-top:38px solid var(--text);filter:drop-shadow(0 3px 4px #0005)}.hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:19%;height:19%;border-radius:50%;background:var(--panel);border:7px solid var(--bg);box-shadow:0 3px 15px #0004;display:grid;place-items:center;font-size:clamp(10px,2vw,15px);font-weight:900;letter-spacing:.06em;pointer-events:none}.spin-btn{width:min(260px,80%);padding:16px 24px;border-radius:15px;background:linear-gradient(135deg,#9585ff,#6251e5);color:white;font-size:1.15rem;font-weight:900;letter-spacing:.12em;box-shadow:0 10px 28px #7564e955}.spin-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}.spin-btn:disabled{opacity:.55;transform:none;cursor:wait}.wheel-note{color:var(--muted);font-size:.88rem;margin:13px 0 0;text-align:center}.side{display:grid;gap:18px}.options-panel,.history-panel{padding:20px}.muted{color:var(--muted)}.total-row{display:flex;justify-content:space-between;align-items:center;margin:12px 0 14px;font-size:.9rem}.total-value{font-weight:800}.total-value.good{color:var(--good)}.total-value.bad{color:var(--danger)}.progress{height:7px;background:var(--panel2);border-radius:99px;overflow:hidden;margin-top:8px}.progress>span{display:block;height:100%;background:var(--good);width:0;transition:width .2s,background .2s}.progress>span.bad{background:var(--danger)}.option-list{display:grid;gap:9px;max-height:430px;overflow:auto;padding-right:3px}.option-row{display:grid;grid-template-columns:35px minmax(0,1fr) 82px 34px;gap:8px;align-items:center;background:var(--panel2);padding:9px;border-radius:12px;border:1px solid transparent}.option-row:focus-within{border-color:var(--accent)}.swatch{width:30px;height:30px;border:0;padding:0;background:none;border-radius:9px;overflow:hidden;cursor:pointer}.swatch input{width:42px;height:42px;margin:-6px;cursor:pointer;border:0;padding:0}.option-name,.option-percent,.new-name,.new-percent{width:100%;min-width:0;background:transparent;border:0;outline:0;color:var(--text);padding:6px 4px}.option-name{font-weight:650}.option-percent{text-align:right;font-variant-numeric:tabular-nums}.percent-wrap{display:flex;align-items:center;gap:2px;color:var(--muted);background:var(--bg);border-radius:8px;padding:0 6px}.remove-btn{background:transparent;color:var(--muted);font-size:20px;border-radius:8px;width:30px;height:30px}.remove-btn:hover{color:var(--danger);background:#ff647c18}.add-row{display:grid;grid-template-columns:minmax(0,1fr) 90px auto;gap:8px;margin-top:12px}.add-row input{background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px;min-width:0;outline:none}.add-row input:focus{border-color:var(--accent)}.option-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.option-actions .btn{flex:1}.hint{font-size:.78rem;color:var(--muted);line-height:1.45;margin:12px 0 0}.history-list{display:grid;gap:8px;max-height:200px;overflow:auto}.history-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel2);padding:10px 12px;border-radius:10px;font-size:.9rem}.history-left{display:flex;align-items:center;gap:9px;min-width:0}.history-dot{width:11px;height:11px;border-radius:4px;flex:none}.history-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650}.history-time{color:var(--muted);font-size:.75rem;white-space:nowrap}.empty{color:var(--muted);font-size:.88rem;text-align:center;padding:16px 5px}.modal-backdrop{position:fixed;inset:0;background:#05060bd9;display:none;align-items:center;justify-content:center;padding:20px;z-index:10;backdrop-filter:blur(7px)}.modal-backdrop.show{display:flex}.modal{width:min(460px,100%);background:var(--panel);border:1px solid var(--line);border-radius:23px;padding:28px;text-align:center;box-shadow:0 25px 90px #0008;animation:pop .25s ease-out}.winner-kicker{font-size:.82rem;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);font-weight:800}.winner-title{font-size:clamp(2rem,7vw,3.2rem);margin:10px 0 8px;letter-spacing:-.05em;overflow-wrap:anywhere}.winner-sub{color:var(--muted);margin-bottom:23px}.winner-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.modal-close{margin-top:12px;background:transparent;color:var(--muted);padding:8px}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:11px 16px;border-radius:12px;font-weight:700;z-index:20;transition:.2s;box-shadow:var(--shadow);max-width:calc(100% - 30px);text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.footer{text-align:center;color:var(--muted);font-size:.78rem;margin-top:24px}@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}@media(max-width:850px){.layout{grid-template-columns:1fr}.wheel-panel{order:0}.side{order:1}.app{padding:17px 14px 35px}.wheel-wrap{width:min(100%,500px)}}@media(max-width:480px){.topbar{align-items:flex-start}.brand{font-size:1.05rem}.brand-icon{width:37px;height:37px}.top-actions .btn{padding:8px 10px;font-size:.82rem}.wheel-panel{padding:15px}.options-panel,.history-panel{padding:15px}.option-row{grid-template-columns:30px minmax(0,1fr) 76px 28px;gap:5px;padding:7px}.add-row{grid-template-columns:minmax(0,1fr) 76px auto}.add-row .btn{padding:8px}.winner-actions{grid-template-columns:1fr}.modal{padding:23px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="brand-icon">◉</div><span>SPIN THE WHEEL</span></div>
+    <div class="top-actions">
+      <button class="btn" id="themeBtn" title="Switch appearance">☀️ Light mode</button>
+      <button class="btn" id="shareBtn">↗ Share</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel wheel-panel">
+      <div class="section-head"><h1>Your wheel</h1><span class="muted" id="optionCount">4 options</span></div>
+      <div class="wheel-wrap">
+        <div class="pointer"></div>
+        <canvas id="wheel" width="900" height="900" aria-label="Wheel showing your options"></canvas>
+        <div class="hub">SPIN</div>
+      </div>
+      <button class="spin-btn" id="spinBtn">SPIN THE WHEEL</button>
+      <p class="wheel-note" id="wheelNote">Set your chances, then give it a spin.</p>
+    </section>
+
+    <aside class="side">
+      <section class="panel options-panel">
+        <div class="section-head"><h2>Options</h2><button class="btn small" id="equalBtn">↔ Equal chances</button></div>
+        <div class="total-row">
+          <div><strong>Probability total</strong><div class="progress"><span id="progressFill"></span></div></div>
+          <div class="total-value" id="totalText">100%</div>
+        </div>
+        <div class="option-list" id="optionList"></div>
+        <form class="add-row" id="addForm">
+          <input class="new-name" id="newName" placeholder="New option name" maxlength="32" aria-label="New option name">
+          <input class="new-percent" id="newPercent" type="number" min="0" max="100" step="0.1" placeholder="Chance %" aria-label="New option chance">
+          <button class="btn primary" type="submit">＋ Add</button>
+        </form>
+        <div class="option-actions">
+          <button class="btn" id="soundBtn">🔊 Sound on</button>
+          <button class="btn" id="presetBtn">▣ Presets</button>
+          <button class="btn danger" id="clearHistoryBtn">Clear history</button>
+        </div>
+        <p class="hint">The percentages must add up to exactly 100% before you can spin. Change each colour using its colour square. Equal chances divides 100% evenly between all options.</p>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="section-head"><h2>Spin history</h2><span class="muted" id="historyCount">0 spins</span></div>
+        <div class="history-list" id="historyList"><div class="empty">Your results will appear here.</div></div>
+      </section>
+    </aside>
+  </main>
+  <div class="footer">Your wheels are saved in this browser automatically. No account needed.</div>
+</div>
+
+<div class="modal-backdrop" id="winnerModal" role="dialog" aria-modal="true" aria-labelledby="winnerTitle">
+  <div class="modal">
+    <div class="winner-kicker">The wheel has decided</div>
+    <div class="winner-title" id="winnerTitle">Pizza!</div>
+    <div class="winner-sub" id="winnerSub">You landed on this option.</div>
+    <div class="winner-actions">
+      <button class="btn danger" id="removeWinnerBtn">Remove winner</button>
+      <button class="btn primary" id="respinBtn">↻ Spin again</button>
+    </div>
+    <button class="modal-close" id="closeModalBtn">Close</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const defaultOptions = [
+    {id:1,name:"Pizza",weight:40,color:"#ff647c"},
+    {id:2,name:"Burger",weight:30,color:"#ffad5c"},
+    {id:3,name:"Pasta",weight:20,color:"#6bcf9b"},
+    {id:4,name:"Salad",weight:10,color:"#6ba8ff"}
+  ];
+  const palette = ["#ff647c","#ffad5c","#f4d35e","#6bcf9b","#55c6d9","#6ba8ff","#9b83ff","#df82d0","#b0bdca","#e58a58"];
+  let options = structuredClone(defaultOptions), history = [], presets = [], theme = "dark";
+  let rotation = 0, spinning = false, soundOn = true, lastWinner = null, animationFrame = null, audioCtx = null, toastTimer;
+  const TAU = Math.PI * 2, baseAngle = -Math.PI/2;
+  const canvas = $("wheel"), ctx = canvas.getContext("2d");
+
+  function encodeWheelForURL() {
+    const payload = JSON.stringify(options.map(({name,weight,color}) => ({name,weight,color})));
+    return btoa(unescape(encodeURIComponent(payload)));
+  }
+  function syncWheelToURL() {
+    try {
+      const url = new URL(location.href);
+      url.searchParams.set("wheel", encodeWheelForURL());
+      window.history.replaceState(null, "", url.toString());
+    } catch(e) {
+      // The wheel still works if the browser prevents URL updates.
+    }
+  }
+  function save() {
+    try { localStorage.setItem("stw-data", JSON.stringify({options,history,presets,theme,soundOn})); } catch(e) {}
+    syncWheelToURL();
+  }
+  function load() {
+    try {
+      const data = JSON.parse(localStorage.getItem("stw-data") || "null");
+      if (data) {
+        if (Array.isArray(data.options) && data.options.length) options = data.options;
+        if (Array.isArray(data.history)) history = data.history;
+        if (Array.isArray(data.presets)) presets = data.presets;
+        if (data.theme === "light" || data.theme === "dark") theme = data.theme;
+        if (typeof data.soundOn === "boolean") soundOn = data.soundOn;
+      }
+    } catch(e) {}
+    const params = new URLSearchParams(location.search);
+    if (params.has("wheel")) {
+      try {
+        const shared = JSON.parse(decodeURIComponent(escape(atob(params.get("wheel")))));
+        if (Array.isArray(shared) && shared.length) options = shared.map((o,i)=>({id:Date.now()+i,name:String(o.name||"Option"),weight:Number(o.weight)||0,color:o.color||palette[i%palette.length]}));
+        history = [];
+      } catch(e) { showToast("That shared wheel link could not be loaded."); }
+    }
+  }
+  function total() { return options.reduce((s,o)=>s+(Number(o.weight)||0),0); }
+  function valid() { return options.length > 0 && Math.abs(total()-100)<0.0001 && options.every(o=>Number(o.weight)>=0); }
+  function fmt(n) { return Number(n.toFixed(2)).toString(); }
+  function render() {
+    renderOptions(); renderHistory(); drawWheel();
+    $("optionCount").textContent = `${options.length} option${options.length===1?"":"s"}`;
+    const t=total(), ok=Math.abs(t-100)<0.0001;
+    $("totalText").textContent = `${fmt(t)}%`;
+    $("totalText").className = `total-value ${ok?"good":"bad"}`;
+    $("progressFill").style.width = `${Math.max(0,Math.min(t,100))}%`;
+    $("progressFill").classList.toggle("bad",!ok);
+    $("spinBtn").disabled = spinning || !valid();
+    $("wheelNote").textContent = spinning ? "The wheel is spinning..." : valid() ? "Set your chances, then give it a spin." : `Adjust your chances by ${fmt(100-t)}% to reach 100%.`;
+    $("themeBtn").textContent = theme==="dark" ? "☀️ Light mode" : "🌙 Dark mode";
+    $("soundBtn").textContent = soundOn ? "🔊 Sound on" : "🔇 Sound off";
+  }
+  function renderOptions() {
+    const list=$("optionList"); list.innerHTML="";
+    options.forEach((o,i)=>{
+      const row=document.createElement("div"); row.className="option-row";
+      const swatch=document.createElement("label"); swatch.className="swatch"; swatch.title="Change colour";
+      const color=document.createElement("input"); color.type="color"; color.value=o.color; color.setAttribute("aria-label",`Colour for ${o.name}`);
+      color.addEventListener("input",()=>{o.color=color.value;drawWheel();save();});
+      swatch.append(color);
+      const name=document.createElement("input"); name.className="option-name"; name.value=o.name; name.maxLength=32; name.setAttribute("aria-label","Option name");
+      name.addEventListener("input",()=>{o.name=name.value;drawWheel();save();});
+      const pct=document.createElement("div"); pct.className="percent-wrap";
+      const percent=document.createElement("input"); percent.className="option-percent"; percent.type="number"; percent.min="0"; percent.max="100"; percent.step="0.1"; percent.value=fmt(Number(o.weight)||0); percent.setAttribute("aria-label",`Chance for ${o.name}`);
+      percent.addEventListener("input",()=>{o.weight=Math.max(0,Number(percent.value)||0);updateTotalsOnly();drawWheel();save();});
+      pct.append(percent,document.createTextNode("%"));
+      const del=document.createElement("button"); del.className="remove-btn"; del.type="button"; del.innerHTML="×"; del.title="Remove option"; del.disabled=options.length<=1;
+      del.addEventListener("click",()=>{if(options.length<=1)return;options.splice(i,1);render();save();});
+      row.append(swatch,name,pct,del); list.append(row);
+    });
+  }
+  function updateTotalsOnly(){
+    const t=total(),ok=Math.abs(t-100)<.0001;
+    $("totalText").textContent=`${fmt(t)}%`; $("totalText").className=`total-value ${ok?"good":"bad"}`;
+    $("progressFill").style.width=`${Math.max(0,Math.min(t,100))}%`; $("progressFill").classList.toggle("bad",!ok);
+    $("spinBtn").disabled=spinning||!valid();
+    $("wheelNote").textContent=valid()?"Set your chances, then give it a spin.":`Adjust your chances by ${fmt(100-t)}% to reach 100%.`;
+    $("optionCount").textContent=`${options.length} option${options.length===1?"":"s"}`;
+  }
+  function drawWheel() {
+    const size=canvas.width, c=size/2, r=size*.465;
+    ctx.clearRect(0,0,size,size);
+    if(!options.length)return;
+    const sum=total() || 1;
+    let a=baseAngle+rotation;
+    options.forEach((o,i)=>{
+      const w=TAU*(Math.max(0,Number(o.weight)||0)/sum), end=a+w;
+      ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,a,end);ctx.closePath();ctx.fillStyle=o.color;ctx.fill();
+      ctx.lineWidth=7;ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue("--panel").trim()||"#191b23";ctx.stroke();
+      if(w>.055){
+        ctx.save();ctx.translate(c,c);ctx.rotate(a+w/2);
+        const label=String(o.name||"Option"); const maxChars=Math.max(5,Math.floor(w*19));
+        let text=label.length>maxChars?label.slice(0,maxChars-1)+"…":label;
+        ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillStyle=contrast(o.color);
+        ctx.font=`800 ${Math.max(19,Math.min(34, r*w*.48))}px system-ui, sans-serif`;
+        ctx.shadowColor="rgba(0,0,0,.15)";ctx.shadowBlur=2;
+        ctx.fillText(text,r*.84,0);ctx.restore();
+      }
+      a=end;
+    });
+    ctx.beginPath();ctx.arc(c,c,r,0,TAU);ctx.lineWidth=10;ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue("--panel2").trim()||"#222530";ctx.stroke();
+  }
+  function contrast(hex){const h=hex.replace("#","");const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return (r*299+g*587+b*114)/1000>155?"#20202a":"#ffffff";}
+  function renderHistory(){
+    $("historyCount").textContent=`${history.length} spin${history.length===1?"":"s"}`;
+    const list=$("historyList");list.innerHTML="";
+    if(!history.length){list.innerHTML='<div class="empty">Your results will appear here.</div>';return;}
+    history.slice(0,30).forEach(h=>{
+      const item=document.createElement("div");item.className="history-item";
+      const left=document.createElement("div");left.className="history-left";
+      const dot=document.createElement("span");dot.className="history-dot";dot.style.background=h.color;
+      const name=document.createElement("span");name.className="history-name";name.textContent=h.name;
+      const time=document.createElement("span");time.className="history-time";time.textContent=h.time;
+      left.append(dot,name);item.append(left,time);list.append(item);
+    });
+  }
+  function showToast(message){const el=$("toast");el.textContent=message;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2400);}
+  function equalise(){
+    if(!options.length)return;
+    const each=Math.floor((100/options.length)*100)/100;
+    let used=0;options.forEach((o,i)=>{o.weight=i===options.length-1?Number((100-used).toFixed(2)):each;used+=o.weight;});
+    render();save();showToast("Chances have been made equal.");
+  }
+  function addOption(name,weight){
+    if(options.length>=40){showToast("You can have up to 40 options.");return;}
+    const color=palette[options.length%palette.length];
+    options.push({id:Date.now()+Math.random(),name:name.trim(),weight:Math.max(0,Number(weight)||0),color});
+    render();save();
+  }
+  function weightedWinner(){
+    let roll=Math.random()*total(),sum=0;
+    for(const o of options){sum+=Number(o.weight)||0;if(roll<sum)return o;}
+    return options[options.length-1];
+  }
+  function playTick(){
+    if(!soundOn)return;
+    try{
+      audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+      if(audioCtx.state==="suspended")audioCtx.resume();
+      const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+      osc.type="sine";osc.frequency.value=520+Math.random()*260;
+      gain.gain.setValueAtTime(.0001,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.035,audioCtx.currentTime+.006);gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.045);
+      osc.connect(gain);gain.connect(audioCtx.destination);osc.start();osc.stop(audioCtx.currentTime+.05);
+    }catch(e){}
+  }
+  function playWin(){
+    if(!soundOn)return;
+    try{
+      audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+      [523.25,659.25,783.99].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;o.type="triangle";g.gain.setValueAtTime(.0001,audioCtx.currentTime+i*.12);g.gain.exponentialRampToValueAtTime(.12,audioCtx.currentTime+i*.12+.02);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+i*.12+.28);o.connect(g);g.connect(audioCtx.destination);o.start(audioCtx.currentTime+i*.12);o.stop(audioCtx.currentTime+i*.12+.3);});
+    }catch(e){}
+  }
+  function spin(){
+    if(spinning||!valid())return;
+    spinning=true;$("winnerModal").classList.remove("show");render();
+    const winner=weightedWinner(),index=options.indexOf(winner);
+    let before=0;for(let i=0;i<index;i++)before+=TAU*(options[i].weight/100);
+    const width=TAU*(winner.weight/100),mid=baseAngle+before+width/2;
+    const targetBase=-Math.PI/2-mid;
+    const extraTurns=6+Math.floor(Math.random()*3);
+    const currentNorm=((rotation%TAU)+TAU)%TAU;
+    let target=targetBase+extraTurns*TAU;
+    while(target<rotation+extraTurns*TAU-TAU)target+=TAU;
+    const delta=target-rotation;
+    const duration=6500+Math.random()*1300,start=performance.now(),startRotation=rotation;
+    let lastTick=0;
+    const ease=t=>1-Math.pow(1-t,4.2);
+    function frame(now){
+      const t=Math.min(1,(now-start)/duration),e=ease(t);
+      rotation=startRotation+delta*e;drawWheel();
+      const tick=Math.floor(e*extraTurns*18);
+      if(tick!==lastTick){lastTick=tick;playTick();}
+      if(t<1){animationFrame=requestAnimationFrame(frame);}
+      else{
+        rotation=targetBase+Math.round((rotation-targetBase)/TAU)*TAU;
+        drawWheel();spinning=false;lastWinner={...winner};recordWinner(winner);render();
+        $("winnerTitle").textContent=winner.name+"!";
+        $("winnerSub").textContent=`${fmt(winner.weight)}% chance · ${new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;
+        $("removeWinnerBtn").disabled=options.length<=1;
+        $("winnerModal").classList.add("show");playWin();
+      }
+    }
+    animationFrame=requestAnimationFrame(frame);
+  }
+  function recordWinner(winner){
+    history.unshift({name:winner.name,color:winner.color,time:new Date().toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})});
+    history=history.slice(0,100);save();
+  }
+  function removeWinner(){
+    if(!lastWinner||options.length<=1)return;
+    const index=options.findIndex(o=>o.id===lastWinner.id);
+    if(index<0)return;
+    const removed=options[index],remaining=options.filter(o=>o.id!==removed.id),sum=remaining.reduce((s,o)=>s+Number(o.weight),0);
+    let used=0;
+    remaining.forEach((o,i)=>{o.weight=i===remaining.length-1?Number((100-used).toFixed(2)):Number((o.weight/sum*100).toFixed(2));used+=o.weight;});
+    options=remaining;lastWinner=null;$("winnerModal").classList.remove("show");render();save();showToast("Winner removed. Remaining chances were redistributed.");
+  }
+  function respin(){ $("winnerModal").classList.remove("show");spin(); }
+  function toggleTheme(){theme=theme==="dark"?"light":"dark";document.documentElement.dataset.theme=theme;save();render();}
+  function share(){
+    syncWheelToURL();
+    const url=location.href;
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(()=>showToast("Share link copied to clipboard!")).catch(()=>prompt("Copy your wheel link:",url));}
+    else prompt("Copy your wheel link:",url);
+  }
+  function managePresets(){
+    const action=prompt("Presets\nType SAVE to save this wheel, LOAD to load a preset, or DELETE to remove one.");
+    if(!action)return;
+    if(action.toLowerCase()==="save"){
+      const name=prompt("Name this preset:");
+      if(!name||!name.trim())return;
+      presets.push({name:name.trim(),options:options.map(o=>({...o}))});save();showToast("Preset saved.");
+    }else if(action.toLowerCase()==="load"){
+      if(!presets.length){showToast("You haven't saved any presets yet.");return;}
+      const choice=prompt("Enter the number to load:\n"+presets.map((p,i)=>`${i+1}. ${p.name}`).join("\n"));
+      const p=presets[Number(choice)-1];if(p){options=p.options.map(o=>({...o,id:Date.now()+Math.random()}));render();save();showToast("Preset loaded.");}
+    }else if(action.toLowerCase()==="delete"){
+      if(!presets.length){showToast("There are no presets to delete.");return;}
+      const choice=prompt("Enter the number to delete:\n"+presets.map((p,i)=>`${i+1}. ${p.name}`).join("\n"));
+      const i=Number(choice)-1;if(i>=0&&i<presets.length){presets.splice(i,1);save();showToast("Preset deleted.");}
+    }
+  }
+  $("addForm").addEventListener("submit",e=>{e.preventDefault();const name=$("newName").value.trim();if(!name){showToast("Give your option a name first.");return;}addOption(name,$("newPercent").value);$("newName").value="";$("newPercent").value="";});
+  $("equalBtn").addEventListener("click",equalise);
+  $("spinBtn").addEventListener("click",spin);
+  $("themeBtn").addEventListener("click",toggleTheme);
+  $("shareBtn").addEventListener("click",share);
+  $("soundBtn").addEventListener("click",()=>{soundOn=!soundOn;save();render();});
+  $("presetBtn").addEventListener("click",managePresets);
+  $("removeWinnerBtn").addEventListener("click",removeWinner);
+  $("respinBtn").addEventListener("click",respin);
+  $("closeModalBtn").addEventListener("click",()=>$("winnerModal").classList.remove("show"));
+  $("winnerModal").addEventListener("click",e=>{if(e.target===$("winnerModal"))$("winnerModal").classList.remove("show");});
+  $("clearHistoryBtn").addEventListener("click",()=>{if(!history.length)return;if(confirm("Clear your spin history?")){history=[];renderHistory();save();}});
+  window.addEventListener("resize",drawWheel);
+  load();document.documentElement.dataset.theme=theme;render();
+  // Put the current wheel in the URL immediately, so the page is link-shareable
+  // even before the user makes their first edit.
+  syncWheelToURL();
+})();
+</script>
+</body>
+</html>
